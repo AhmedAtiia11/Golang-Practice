@@ -114,5 +114,90 @@ func main() {
 	fmt.Println(map_name["apple"])
 	delete(code, "banana")
 	fmt.Println("Map after deletion:", code)
+	fmt.Println("############################ Functions in Go ###############################")
+	add_result,add_result_int:= add (5, 10)
+	fmt.Println(add_result)
+	fmt.Println(add_result_int)
+	// defer Print(1, "Hello", "World", "Go is great!") // defer in functions
+	fmt.Println(factorial(5)) // Output: 120
+	x:=func (a int) int {
+		return a * a
+	}
+	x(5) // This is an anonymous function that squares the input
+	fmt.Println("Square of 5 is:", x(5))
+	fmt.Println(applyoperation(3, 5, add2))      // Output: 8
+	fmt.Println(applyoperation(3, 5, multiply2)) // Output: 15
 
+	fmt.Println("############################ Pointers in Go ###############################")
+	Pointer_var:= 77
+	// ptr:=*x
+	fmt.Println(Pointer_var,&Pointer_var,*(&Pointer_var))
+	ptr:=&Pointer_var
+	*ptr=88
+	fmt.Println(Pointer_var,&Pointer_var,*(&Pointer_var))
+	myinteger=10
+	modify(myinteger)
+	fmt.Println("pass my value Pointer:", myinteger) 
+	modify2(&myinteger)
+	fmt.Println("pass my reference Pointer:", myinteger) 
+	
+	fmt.Println("pass my reference Pointer at slice:", add_to_slice(myslice)) 
+	fmt.Println("############################ struct in Go ###############################")
+	mystruct1:=mystruct{name: "John", age: 30}
+	mystruct2 := mystruct{"Doe", 25}
+	fmt.Printf("Struct Name: %+v\nStruct Age: %+v\n", mystruct1.name, mystruct1.age)
+	if mystruct1.age > mystruct2.age {
+		fmt.Println("To Compare we must se the sa")
+	}
+}
+
+func add(a int,b int) (string,int) {
+		sum :=a+b
+		return "Sum is: " + strconv.Itoa(sum), sum
+	}
+// Function with variadic parameters
+func Print(a int, s ...string) (int, int) {
+	for _, str := range s {
+		fmt.Println(str)
+	}
+	return 0, 0
+}
+
+// Recursive function to calculate factorial
+func factorial(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return n * factorial(n-1)
+
+}
+// high order function
+func applyoperation(a,b int ,operation func(int, int) int) int {
+	return operation(a,b)
+}
+
+func add2(x, y int) int {
+ return x + y
+}
+
+func multiply2(x, y int) int {
+ return x * y
+}
+
+func modify(a int){
+	a+= 10
+}
+
+func modify2(a *int){
+	*a+= 10
+}
+
+func add_to_slice(s []string)[]string{
+	s=append(s,"and","easy")
+	return s
+}
+
+type mystruct struct {
+	name string
+	age  int
 }
