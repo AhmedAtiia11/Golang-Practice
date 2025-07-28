@@ -115,12 +115,12 @@ func main() {
 	delete(code, "banana")
 	fmt.Println("Map after deletion:", code)
 	fmt.Println("############################ Functions in Go ###############################")
-	add_result,add_result_int:= add (5, 10)
+	add_result, add_result_int := add(5, 10)
 	fmt.Println(add_result)
 	fmt.Println(add_result_int)
 	// defer Print(1, "Hello", "World", "Go is great!") // defer in functions
 	fmt.Println(factorial(5)) // Output: 120
-	x:=func (a int) int {
+	x := func(a int) int {
 		return a * a
 	}
 	x(5) // This is an anonymous function that squares the input
@@ -129,32 +129,45 @@ func main() {
 	fmt.Println(applyoperation(3, 5, multiply2)) // Output: 15
 
 	fmt.Println("############################ Pointers in Go ###############################")
-	Pointer_var:= 77
+	Pointer_var := 77
 	// ptr:=*x
-	fmt.Println(Pointer_var,&Pointer_var,*(&Pointer_var))
-	ptr:=&Pointer_var
-	*ptr=88
-	fmt.Println(Pointer_var,&Pointer_var,*(&Pointer_var))
-	myinteger=10
+	fmt.Println(Pointer_var, &Pointer_var, *(&Pointer_var))
+	ptr := &Pointer_var
+	*ptr = 88
+	fmt.Println(Pointer_var, &Pointer_var, *(&Pointer_var))
+	myinteger = 10
 	modify(myinteger)
-	fmt.Println("pass my value Pointer:", myinteger) 
+	fmt.Println("pass my value Pointer:", myinteger)
 	modify2(&myinteger)
-	fmt.Println("pass my reference Pointer:", myinteger) 
-	
-	fmt.Println("pass my reference Pointer at slice:", add_to_slice(myslice)) 
+	fmt.Println("pass my reference Pointer:", myinteger)
+
+	fmt.Println("pass my reference Pointer at slice:", add_to_slice(myslice))
 	fmt.Println("############################ struct in Go ###############################")
-	mystruct1:=mystruct{name: "John", age: 30}
+	mystruct1 := mystruct{name: "John", age: 30}
 	mystruct2 := mystruct{"Doe", 25}
 	fmt.Printf("Struct Name: %+v\nStruct Age: %+v\n", mystruct1.name, mystruct1.age)
 	if mystruct1.age > mystruct2.age {
-		fmt.Println("To Compare we must se the sa")
+		fmt.Println("To Compare we must use the same struct")
 	}
+	fmt.Println("############################ Methods in Go ###############################")
+	c := circle{radius: 5}
+	c.calculateArea()
+	fmt.Printf("%+v\n", c)
+	student_struct := student{name: "Ahmed", grades: []float64{10, 20, 30, 40}}
+	student_struct.display_name()
+	fmt.Printf("Grades are %f \n", student_struct.calculate_grades())
+	fmt.Println("############################ Interfaces in Go ###############################")
+	rectangular := Rectangle{Length: 5, Width: 10}
+	square := Square{Side: 5}
+	Print_area_perimeter(rectangular)
+	Print_area_perimeter(square)
 }
 
-func add(a int,b int) (string,int) {
-		sum :=a+b
-		return "Sum is: " + strconv.Itoa(sum), sum
-	}
+func add(a int, b int) (string, int) {
+	sum := a + b
+	return "Sum is: " + strconv.Itoa(sum), sum
+}
+
 // Function with variadic parameters
 func Print(a int, s ...string) (int, int) {
 	for _, str := range s {
@@ -171,33 +184,100 @@ func factorial(n int) int {
 	return n * factorial(n-1)
 
 }
+
 // high order function
-func applyoperation(a,b int ,operation func(int, int) int) int {
-	return operation(a,b)
+func applyoperation(a, b int, operation func(int, int) int) int {
+	return operation(a, b)
 }
 
 func add2(x, y int) int {
- return x + y
+	return x + y
 }
 
 func multiply2(x, y int) int {
- return x * y
+	return x * y
 }
 
-func modify(a int){
-	a+= 10
+func modify(a int) {
+	a += 10
 }
 
-func modify2(a *int){
-	*a+= 10
+func modify2(a *int) {
+	*a += 10
 }
 
-func add_to_slice(s []string)[]string{
-	s=append(s,"and","easy")
+func add_to_slice(s []string) []string {
+	s = append(s, "and", "easy")
 	return s
 }
 
 type mystruct struct {
 	name string
 	age  int
+}
+
+// Method 1
+
+type circle struct {
+	radius float64
+	area   float64
+}
+
+func (c *circle) calculateArea() {
+	c.area = 3.14 * (c.radius * c.radius)
+}
+
+// Method 2
+type student struct {
+	name   string
+	grades []float64
+}
+
+func (s student) display_name() {
+	fmt.Println(s.name)
+}
+
+func (s student) calculate_grades() float64 {
+	sum := 0.0
+	for _, v := range s.grades {
+		sum += v
+	}
+	return float64(sum*100) / float64(len(s.grades)*100)
+}
+
+// Interfaces
+type shape interface {
+	area() float64
+	perimeter() float64
+}
+
+type Square struct {
+	Side float64 // Capitalized for consistency
+}
+
+func (s Square) area() float64 {
+	return s.Side * s.Side
+}
+
+func (s Square) perimeter() float64 {
+	return 4 * s.Side
+}
+
+type Rectangle struct { // Renamed from rect to Rectangle
+	Length float64 // Capitalized for consistency
+	Width  float64
+}
+
+func (r Rectangle) perimeter() float64 {
+	return 2 * (r.Length + r.Width)
+}
+
+func (r Rectangle) area() float64 {
+	return r.Length * r.Width
+}
+
+func Print_area_perimeter(s shape) {
+	fmt.Printf("Shape: %+v\n", s) // Use %+v for detailed struct output
+	fmt.Printf("Area: %.2f\n", s.area())
+	fmt.Printf("Perimeter: %.2f\n", s.perimeter())
 }
