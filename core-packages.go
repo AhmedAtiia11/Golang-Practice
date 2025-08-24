@@ -146,3 +146,9 @@ func encodingwithmd5(str string) string {
 	hashcode := md5.Sum([]byte(str))
 	return hex.EncodeToString(hashcode[:])
 }
+func checkeven(i int) bool {
+	if i%2 == 0 {
+		return true
+	}
+	return false
+}
